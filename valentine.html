@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Valentines Day</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @keyframes pinkShades {
+      0% { background-color: #FFC0CB; }
+      25% { background-color: #FFB6C1; }
+      50% { background-color: #FF69B4; }
+      75% { background-color: #FF1493; }
+      100% { background-color: #FFC0CB; }
+    }
+    .gradient-background {
+      animation: pinkShades 6s infinite alternate;
+    }
+    .bounce2 {
+      animation: bounce2 2s ease infinite;
+    }
+    @keyframes bounce2 {
+      0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+      }
+      40% {
+        transform: translateY(-20px);
+      }
+      60% {
+        transform: translateY(-10px);
+      }
+    }
+  </style>
+</head>
+<body class="gradient-background">
+  <div class="flex items-center justify-center h-screen">
+    <div class="flex flex-col items-center p-4">
+      <img id="imageDisplay" src="./images/image1.png" alt="Cute kitten with flowers" class="rounded-md h-[300px]" style="object-fit: cover;" />
+      <h2 id="valentineQuestion" class="text-5xl font-bold italic text-[#0237d6] my-4">What is your status for 2025 Valentine?</h2>
+      <div class="flex gap-4 pt-[20px] items-center" id="responseButtons">
+        <button id="yesButton"
+          class="bounce2 inline-flex items-center justify-center whitespace-normal break-words rounded-md text-[20px] font-medium disabled:pointer-events-none disabled:opacity-50 hover:bg-green-400 min-h-12 min-w-[100px] px-4 py-2 bg-green-500 text-white transition text-center">
+          Not Single
+        </button>
+        <button id="noButton"
+          class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-[20px] font-medium transition disabled:pointer-events-none disabled:opacity-50 hover:bg-red-700 h-12 min-w-[75px] w-auto px-4 py-2 bg-red-500 text-white">
+          Single
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import confetti from 'https://cdn.skypack.dev/canvas-confetti';
+    const yesButton = document.getElementById('yesButton');
+    const noButton = document.getElementById('noButton');
+    const imageDisplay = document.getElementById('imageDisplay');
+    const valentineQuestion = document.getElementById('valentineQuestion');
+    const responseButtons = document.getElementById('responseButtons');
+
+    let noClickCount = 0;
+    let buttonHeight = 48;
+    let buttonWidth = 100;
+    let fontSize = 20;
+    const imagePaths = [
+      "./images/image1.png",
+      "./images/image2.png",
+      "./images/image3.png",
+      "./images/image4.png",
+      "./images/image5.png",
+      "./images/image6.png",
+      "./images/image7.png"
+    ];
+
+    function getRandomPosition() {
+      const x = Math.random() * (window.innerWidth - 150);
+      const y = Math.random() * (window.innerHeight - 75);
+      return { x, y };
+    }
+
+    noButton.addEventListener('click', function() {
+      if (noClickCount < 5) {
+        noClickCount++;
+        imageDisplay.src = imagePaths[noClickCount];
+        buttonHeight += 35;
+        buttonWidth += 35;
+        fontSize += 10;
+        yesButton.style.height = `${buttonHeight}px`;
+        yesButton.style.width = `${buttonWidth}px`;
+        yesButton.style.fontSize = `${fontSize}px`;
+        yesButton.style.whiteSpace = "normal";
+        yesButton.style.wordWrap = "break-word";
+        yesButton.style.display = "flex";
+        yesButton.style.alignItems = "center";
+        yesButton.style.justifyContent = "center";
+        let newPos = getRandomPosition();
+        noButton.style.position = "absolute";
+        noButton.style.left = `${newPos.x}px`;
+        noButton.style.top = `${newPos.y}px`;
+        if (noClickCount < 6) {
+          noButton.textContent = ["Single?", "Are you sure?", "NAURR, tell the truth!", "c'mon pants on fire", "Honesty is the best policy ya", "C'MON!!"][noClickCount];
+        }
+      } else {
+        noButton.style.display = 'none';
+        yesButton.textContent = "Not Single in 2026";
+        yesButton.style.fontSize = "35px";
+      }
+    });
+
+    yesButton.addEventListener('click', () => {
+      imageDisplay.src = './images/image7.png';
+      valentineQuestion.textContent = "Slayy!! Happy Valentines day :D AND STAY HAPPY >U<";
+      responseButtons.style.display = 'none';
+      confetti();
+    });
+  </script>
+</body>
+</html>
